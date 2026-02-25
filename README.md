@@ -59,28 +59,26 @@ Choose accommodation options
 Display travel details and calculated costs
 
  Project Structure
-TravelAgencyManagementSystem/
-│
-├── src/
-│   ├── main/
-│   │   └── Main.java
-│   │
-│   ├── destination/
-│   │   └── Destination.java
-│   │
-│   ├── transport/
-│   │   ├── Transport.java
-│   │   ├── BusTransport.java
-│   │   └── FlightTransport.java
-│   │
-│   ├── itinerary/
-│   │   └── Itinerary.java
-│   │
-│   └── accommodation/
-│       ├── Accommodation.java
-│       └── HotelAccommodation.java
-│
-└── README.md
+
+```
+OOP-PROJECT/
+├── README.md
+└── src/
+    ├── accommodation/
+    │   ├── Accommodation.java
+    │   └── HotelAccommodation.java
+    ├── destination/
+    │   └── Destination.java
+    ├── itinerary/
+    │   └── Itinerary.java
+    ├── main/
+    │   └── Main.java
+    └── transport/
+        ├── BusTransport.java
+        ├── FlightTransport.java
+        └── Transport.java
+```
+
  Class Summary
 Destination (Concrete Class)
 
