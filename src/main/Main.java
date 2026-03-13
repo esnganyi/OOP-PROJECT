@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Scanner;
+
 import destination.Destination;
 import transport.Transport;
 import transport.BusTransport;
@@ -12,37 +14,105 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Travel Agency Management System ===");
-        System.out.println();
+        Scanner scanner = new Scanner(System.in);
 
-        // Create Destination object
-        Destination destination = new Destination("Paris", "France");
-        destination.displayDestination();
-        System.out.println();
+        try {
 
-        // Demonstrate inheritance & polymorphism with Transport
-        Transport bus = new BusTransport("Luxury Bus", 4500);
-        Transport flight = new FlightTransport("International Flight", 45000);
+            System.out.println("=== Travel Agency Management System ===");
 
-        bus.displayTransport();
-        System.out.println("Transport Price: " + bus.getPrice());
-        System.out.println();
+            // User enters destination
+            System.out.print("Enter destination name: ");
+            String destinationName = scanner.nextLine();
 
-        flight.displayTransport();
-        System.out.println("Transport Price: " + flight.getPrice());
-        System.out.println();
+            System.out.print("Enter country: ");
+            String country = scanner.nextLine();
 
-        // Create Itinerary object
-        Itinerary itinerary = new Itinerary("Paris City Tour", 5, 20000);
-        itinerary.displayItinerary();
-        System.out.println();
+            Destination destination = new Destination(destinationName, country);
+            destination.displayDestination();
 
-        // Demonstrate interface usage
-        Accommodation hotel = new HotelAccommodation("Grand Palace Hotel", 8000);
-        hotel.displayAccommodation();
-        System.out.println("Accommodation Price: " + hotel.getAccommodationPrice());
+            System.out.println();
 
-        System.out.println();
-        System.out.println("=== End of Travel Details ===");
+            // Choose transport
+            System.out.println("Choose transport type:");
+            System.out.println("1. Bus");
+            System.out.println("2. Flight");
+            System.out.print("Enter choice: ");
+
+            int transportChoice = scanner.nextInt();
+
+            Transport transport;
+
+            if (transportChoice == 1) {
+
+                System.out.print("Enter bus price: ");
+                double busPrice = scanner.nextDouble();
+
+                transport = new BusTransport("Bus Transport", busPrice);
+
+            } else if (transportChoice == 2) {
+
+                System.out.print("Enter flight price: ");
+                double flightPrice = scanner.nextDouble();
+
+                transport = new FlightTransport("Flight Transport", flightPrice);
+
+            } else {
+
+                System.out.println("Invalid transport choice. Defaulting to Bus.");
+                transport = new BusTransport("Bus Transport", 0);
+
+            }
+
+            transport.displayTransport();
+            System.out.println("Transport Price: " + transport.getPrice());
+
+            System.out.println();
+
+            // Itinerary input
+            scanner.nextLine(); // clear buffer
+
+            System.out.print("Enter itinerary name: ");
+            String itineraryName = scanner.nextLine();
+
+            System.out.print("Enter number of days: ");
+            int numberOfDays = scanner.nextInt();
+
+            System.out.print("Enter itinerary price: ");
+            double itineraryPrice = scanner.nextDouble();
+
+            Itinerary itinerary = new Itinerary(itineraryName, numberOfDays, itineraryPrice);
+            itinerary.displayItinerary();
+
+            System.out.println();
+
+            // Accommodation
+            scanner.nextLine();
+
+            System.out.print("Enter hotel name: ");
+            String hotelName = scanner.nextLine();
+
+            System.out.print("Enter price per night: ");
+            double pricePerNight = scanner.nextDouble();
+
+            Accommodation hotel = new HotelAccommodation(hotelName, pricePerNight);
+            hotel.displayAccommodation();
+
+            System.out.println("Accommodation Price: " + hotel.getAccommodationPrice());
+
+        }
+
+        catch (Exception e) {
+
+            System.out.println("Error: Invalid input detected.");
+            System.out.println("Please enter the correct data type.");
+
+        }
+
+        finally {
+
+            scanner.close();
+            System.out.println("Program ended safely.");
+
+        }
     }
 }
