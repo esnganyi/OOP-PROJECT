@@ -1,6 +1,7 @@
 package main;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import destination.Destination;
 import transport.Transport;
@@ -9,6 +10,7 @@ import transport.FlightTransport;
 import itinerary.Itinerary;
 import accommodation.Accommodation;
 import accommodation.HotelAccommodation;
+import utils.DataManager;
 
 public class Main {
 
@@ -16,11 +18,24 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
+        // Collection to store destinations
+        ArrayList<Destination> destinations = DataManager.loadDestinations();
+
         try {
 
             System.out.println("=== Travel Agency Management System ===");
+            System.out.println();
 
-            // User enters destination
+            // Show previously saved destinations
+            if (!destinations.isEmpty()) {
+                System.out.println("Previously Saved Destinations:");
+                for (Destination d : destinations) {
+                    d.displayDestination();
+                }
+                System.out.println();
+            }
+
+            // USER INPUT (replaces hardcoded Paris)
             System.out.print("Enter destination name: ");
             String destinationName = scanner.nextLine();
 
@@ -28,49 +43,47 @@ public class Main {
             String country = scanner.nextLine();
 
             Destination destination = new Destination(destinationName, country);
+            destinations.add(destination);
             destination.displayDestination();
-
             System.out.println();
 
-            // Choose transport
+            // Transport choice
             System.out.println("Choose transport type:");
             System.out.println("1. Bus");
             System.out.println("2. Flight");
             System.out.print("Enter choice: ");
 
-            int transportChoice = scanner.nextInt();
+            int choice = scanner.nextInt();
 
             Transport transport;
 
-            if (transportChoice == 1) {
+            if (choice == 1) {
 
                 System.out.print("Enter bus price: ");
                 double busPrice = scanner.nextDouble();
 
-                transport = new BusTransport("Bus Transport", busPrice);
+                transport = new BusTransport("Bus", busPrice);
 
-            } else if (transportChoice == 2) {
+            } else if (choice == 2) {
 
                 System.out.print("Enter flight price: ");
                 double flightPrice = scanner.nextDouble();
 
-                transport = new FlightTransport("Flight Transport", flightPrice);
+                transport = new FlightTransport("Flight", flightPrice);
 
             } else {
 
-                System.out.println("Invalid transport choice. Defaulting to Bus.");
-                transport = new BusTransport("Bus Transport", 0);
-
+                System.out.println("Invalid choice. Defaulting to Bus.");
+                transport = new BusTransport("Bus", 0);
             }
 
             transport.displayTransport();
             System.out.println("Transport Price: " + transport.getPrice());
-
             System.out.println();
 
-            // Itinerary input
             scanner.nextLine(); // clear buffer
 
+            // Itinerary input
             System.out.print("Enter itinerary name: ");
             String itineraryName = scanner.nextLine();
 
@@ -82,12 +95,11 @@ public class Main {
 
             Itinerary itinerary = new Itinerary(itineraryName, numberOfDays, itineraryPrice);
             itinerary.displayItinerary();
-
             System.out.println();
 
-            // Accommodation
-            scanner.nextLine();
+            scanner.nextLine(); // clear buffer
 
+            // Accommodation input
             System.out.print("Enter hotel name: ");
             String hotelName = scanner.nextLine();
 
@@ -96,23 +108,24 @@ public class Main {
 
             Accommodation hotel = new HotelAccommodation(hotelName, pricePerNight);
             hotel.displayAccommodation();
-
             System.out.println("Accommodation Price: " + hotel.getAccommodationPrice());
 
-        }
+            System.out.println();
 
-        catch (Exception e) {
+            // SAVE DATA TO FILE
+            DataManager.saveDestinations(destinations);
+
+            System.out.println("=== End of Travel Details ===");
+
+        } catch (Exception e) {
 
             System.out.println("Error: Invalid input detected.");
-            System.out.println("Please enter the correct data type.");
+            System.out.println("Please enter correct data types.");
 
-        }
-
-        finally {
+        } finally {
 
             scanner.close();
             System.out.println("Program ended safely.");
-
         }
     }
 }
